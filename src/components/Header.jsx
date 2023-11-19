@@ -31,7 +31,8 @@ function Header() {
 
     return (
         <nav className='header'>
-            <div>
+            <div className='icon-img'>
+                {/* <img src="../../vite.svg" /> */}
                 <h2>ToDo App</h2>
             </div>
             <article>
