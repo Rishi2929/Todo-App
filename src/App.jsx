@@ -4,9 +4,35 @@ import Header from './components/header'
 import Profile from './pages/Profile'
 import Login from './pages/Login'
 import Register from './pages/Register'
-// import './App.css'
+import { Toaster } from 'react-hot-toast'
+import { useContext, useEffect } from 'react'
+import { Context, server } from './main'
+import axios from 'axios'
 
 function App() {
+
+  const { setUser, setIsAuthenticated, setLoading } = useContext(Context)
+
+  useEffect(() => {
+    setLoading(true)
+    axios.get(`${server}/users/me`,
+      {
+        withCredentials: true
+
+      }).then(res => {
+        setUser(res.data.user),
+          setIsAuthenticated(true)
+        setLoading(false)
+
+      }).catch((error) => {
+        // error.response.data.message,
+        setUser({});
+        setIsAuthenticated(false)
+        setLoading(false)
+
+
+      })
+  }, [])
 
   return (
     <Router>
@@ -16,9 +42,8 @@ function App() {
         <Route path='/profile' element={<Profile />} />
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
-
-
       </Routes>
+      <Toaster />
     </Router>
   )
 }
